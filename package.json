@@ -1,0 +1,23 @@
+{
+  "name": "schema-based-validator-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/validator.js",
+  "scripts": {
+    "test-lr": "nodemon --ignore dist --exec 'tsc-watch --onSuccess \"npm run test\"'",
+    "test": "mocha test/**/*.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "nodemon": "^1.17.3",
+    "sinon": "^5.0.1",
+    "tsc-watch": "^1.0.21",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "schematic-traverse-node": "file:../schematic-traverse-node"
+  }
+}
