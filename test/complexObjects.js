@@ -1,10 +1,12 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
-const { shapeOf, arrayOf, isType, messages, or } = require('../dist/validator');
+const { shapeOf, arrayOf, isType, messages, or, and, isRequired } = require('../dist/validator');
 
 describe('Complex objects', () => {
     const isString = isType('string');
-    const isStringMessage = messages.invalidTypeString;
+    const isStringMessage = messages['invalidType.string'];
+    const isRequiredMessage = messages.isRequired;
+
     describe('Objects', () => {
         it('Empty shape, empty input', () => {
             const validate = shapeOf();
@@ -132,6 +134,7 @@ describe('Complex objects', () => {
                 )
         });
         it('??! Subobject & or (invalid 2lvl value)', () => {
+            // Mixed output of `or` ([]) vs inner `shapeOf` ({}). 
             const validate = shapeOf(
                 {
                     foo: isString,
@@ -340,6 +343,42 @@ describe('Complex objects', () => {
                         ],
                     }
                 )
+        });
+        describe('Required array items', () => {
+            it.skip('Using custom validator + and cond', () => {
+                // This sux, as the result structure wont be for an `arrayOf`,
+                // but for the `and` instead. :|
+                // How to output the error for the field, and for it's items?
+
+                // For an array as a required field, it makes sense that
+                // at least 1 field is required --> arrayField[0]!
+                const validate = and([arrayOf(isString), isRequired()]);
+                expect(
+                    validate()
+                )
+                    .to.eql(
+                        {
+                            result: false,
+                            message: [
+                                [isStringMessage],
+                            ],
+                        }
+                    )
+            });
+            it('Using built in Assertion.isRequired', () => {
+                const validate = arrayOf(isString).isRequired();
+                expect(
+                    validate()
+                )
+                    .to.eql(
+                        {
+                            result: false,
+                            message: [
+                                [isRequiredMessage],
+                            ],
+                        }
+                    )
+            });
         });
     })
 });

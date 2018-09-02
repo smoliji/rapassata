@@ -10,7 +10,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var traverse_1 = require("schematic-traverse-node/dist/traverse");
 var whenDone_1 = require("schematic-traverse-node/dist/whenDone");
+var mongooseValidator = require("mongoose-validator");
 var constant = function (x) { return function () { return x; }; };
+var identity = function (x) { return x; };
 var negate = function (fn) { return function () {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -32,9 +34,16 @@ var isEmpty = function (obj) {
     if (obj === void 0) { obj = {}; }
     return !Object.keys(obj).length;
 };
+var defaultIsValueEmpty = function (value) { return (value === null
+    || value === undefined
+    || (typeof value === 'object' && isEmpty(value))); };
 var messages = {
-    invalidTypeString: 'Value is not a string',
-    invalidTypeNumber: 'Value is not a number',
+    'invalidType.string': 'Value is not a string',
+    'invalidType.number': 'Value is not a number',
+    'invalidType.boolean': 'Value is not a boolean',
+    'invalidType.object': 'Value is not a object',
+    noneOf: 'Value is none of {ARGS[0]}',
+    isRequired: 'Value is required',
 };
 exports.messages = messages;
 var validResult = true;
@@ -43,13 +52,30 @@ var isValid = function (invokedValidatable) { return invokedValidatable.result =
 var isInvalid = negate(isValid);
 var T_SHAPE = Symbol('shape');
 var defaultValidtorOptions = {
+    noMongoose: false,
     validator: constant(validResult),
     message: 'Error',
 };
 var withDefaultValidatorOptions = function (validatorOptions) { return (__assign({}, defaultValidtorOptions, validatorOptions)); };
-var createValidatable = function (validatorOptions) {
-    validatorOptions = withDefaultValidatorOptions(validatorOptions);
+var cast = function (validatable, type, defaultVal) {
+    if (defaultVal === void 0) { defaultVal = ''; }
     return function (value) {
+        var rest = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            rest[_i - 1] = arguments[_i];
+        }
+        return validatable.apply(void 0, [type(value || defaultVal)].concat(rest));
+    };
+};
+exports.cast = cast;
+var createAssertion = function (iniValidatorOptions) {
+    var fullValidatorOpts = withDefaultValidatorOptions(iniValidatorOptions);
+    var validatorOptions = (fullValidatorOpts.noMongoose ? identity : mongooseValidator)(fullValidatorOpts);
+    // Cast validator.js validators inputs to string to prevent the error thrown
+    if (iniValidatorOptions && (typeof iniValidatorOptions.validator === 'string')) {
+        validatorOptions.validator = cast(validatorOptions.validator, String);
+    }
+    var assertion = function (value) {
         return whenDone_1.default(function (validatorResult) {
             var invokedValidatable = {
                 result: validatorResult,
@@ -58,24 +84,50 @@ var createValidatable = function (validatorOptions) {
             return invokedValidatable;
         }, validatorOptions.validator(value));
     };
+    assertion.isRequired = function (isValueEmpty) {
+        return function (value) {
+            var requiredResult = isRequired(isValueEmpty)(value);
+            if (!requiredResult.result) {
+                return {
+                    result: requiredResult.result,
+                    message: requiredResult.message,
+                };
+            }
+            return assertion(value);
+        };
+    };
+    return assertion;
 };
+exports.createAssertion = createAssertion;
 var combineMessages = function (messages) { return [].concat.apply([], messages); };
+var oneOf = function (alts) {
+    return createAssertion({
+        message: messages.noneOf,
+        arguments: [alts.map(String).join(', ')],
+        validator: function (value) { return alts.includes(value); },
+    });
+};
+exports.oneOf = oneOf;
 var isType = function (type) {
-    if (type === 'number') {
-        return createValidatable({
-            message: messages.invalidTypeNumber,
-            validator: function (x) { return (typeof x === type); },
-        });
-    }
-    if (type === 'string') {
-        return createValidatable({
-            message: messages.invalidTypeString,
-            validator: function (x) { return (typeof x === type); },
-        });
-    }
-    throw new TypeError("`" + type + "` is not a valid type check.");
+    // Validators have to bypass the mongoose validators,
+    // otherwise validator funcs wont be called on e.g. undefined values
+    return createAssertion({
+        message: messages["invalidType." + type],
+        validator: function (x) { return (typeof x === type); },
+        noMongoose: true,
+    });
 };
 exports.isType = isType;
+var isRequired = function (isValueEmpty) {
+    if (isValueEmpty === void 0) { isValueEmpty = defaultIsValueEmpty; }
+    return function (value) {
+        return {
+            result: !isValueEmpty(value),
+            message: messages.isRequired,
+        };
+    };
+};
+exports.isRequired = isRequired;
 var and = function (validatables) {
     return function (value) {
         return whenDone_1.default(function (invokedValidatables) { return ({
@@ -127,12 +179,14 @@ var shapeOf = function (structure) {
 };
 exports.shapeOf = shapeOf;
 var arrayOf = function (itemStructure) {
-    return traverse_1.array(itemStructure, function (arrayResult) { return ({
+    var validateMembers = traverse_1.array(itemStructure, function (arrayResult) { return ({
         result: !arrayResult.some(isInvalid),
         message: arrayResult.some(isInvalid)
             ? arrayResult
                 .map(function (invokedValidatable) {
                 return invokedValidatable.result
+                    // Array of objects vs array of anything else:
+                    // Object empty={}, otherwise=[]
                     ? (itemStructure[T_SHAPE] ? {} : combineMessages())
                     : (itemStructure[T_SHAPE]
                         ? invokedValidatable.message
@@ -140,24 +194,20 @@ var arrayOf = function (itemStructure) {
             })
             : []
     }); });
+    validateMembers.isRequired = function (isValueEmpty) {
+        return function (value) {
+            var requiredResult = isRequired(isValueEmpty)(value);
+            if (!requiredResult.result) {
+                return {
+                    result: requiredResult.result,
+                    message: [
+                        combineMessages([requiredResult.message]),
+                    ],
+                };
+            }
+            return validateMembers(value);
+        };
+    };
+    return validateMembers;
 };
 exports.arrayOf = arrayOf;
-// console.log(
-// isType('string')('1'),
-// and([isType('string'), isType('number')])('A')
-// shapeOf(
-//     {
-//         // a: isType('string')
-//         a: shapeOf(
-//             {
-//                 b: isType('number')
-//             }
-//         )
-//     }
-// )(
-//     {
-//         a: null
-//     }
-// )
-// arrayOf(isType('string'))([1, '2'])
-// )
