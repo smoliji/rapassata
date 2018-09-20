@@ -1,8 +1,8 @@
-"use strict";
 // import { traverse } from 'schematic-traverse-node';
 // import { shape, array } from 'schematic-traverse-node/dist/traverse';
 // import whenDone from 'schematic-traverse-node/dist/whenDone';
 // import * as mongooseValidator from 'mongoose-validator';
+
 // const constant = x => () => x;
 // const identity = (x) => x;
 // const negate = fn => (...args) => !fn(...args);
@@ -18,6 +18,7 @@
 //     || value === undefined
 //     || (typeof value === 'object' && isEmpty(value))
 // );
+
 // const messages = {
 //     'invalidType.string': 'Value is not a string',
 //     'invalidType.number': 'Value is not a number',
@@ -26,24 +27,29 @@
 //     noneOf: 'Value is none of {ARGS[0]}',
 //     isRequired: 'Value is required',
 // }
+
 // const validResult = true;
 // const invalidResult = !validResult;
 // const isValid = invokedValidatable => invokedValidatable.result === validResult;
 // const isInvalid = negate(isValid);
 // const T_SHAPE = Symbol('shape');
+
 // const defaultValidtorOptions = {
 //     noMongoose: false,
 //     validator: constant(validResult),
 //     message: 'Error',
 // };
+
 // const withDefaultValidatorOptions = (validatorOptions) => (
 //     {
 //         ...defaultValidtorOptions,
 //         ...validatorOptions,
 //     }
 // );
+
 // const cast = (validatable, type, defaultVal = '') =>
 //     (value, ...rest) => validatable(type(value || defaultVal), ...rest);
+
 // const createAssertion = (iniValidatorOptions) => {
 //     const fullValidatorOpts = withDefaultValidatorOptions(iniValidatorOptions);
 //     const validatorOptions = (fullValidatorOpts.noMongoose ? identity : mongooseValidator)(fullValidatorOpts);
@@ -62,6 +68,7 @@
 //             },
 //             validatorOptions.validator(value)
 //         );
+
 //     assertion.isRequired = (isValueEmpty) => {
 //         return (value) => {
 //             const requiredResult = isRequired(isValueEmpty)(value);
@@ -74,9 +81,12 @@
 //             return assertion(value);
 //         };
 //     };
+
 //     return assertion;
 // };
+
 // const combineMessages = (messages) => [].concat(...messages);
+
 // const oneOf = (alts) =>
 //     createAssertion(
 //         {
@@ -85,6 +95,7 @@
 //             validator: value => alts.includes(value),
 //         }
 //     );
+
 // const isType = (type) => {
 //     // Validators have to bypass the mongoose validators,
 //     // otherwise validator funcs wont be called on e.g. undefined values
@@ -96,6 +107,7 @@
 //         },
 //     );
 // };
+
 // const isRequired = (
 //     isValueEmpty = defaultIsValueEmpty
 // ) => (value) => {
@@ -104,6 +116,7 @@
 //         message: messages.isRequired,
 //     };
 // };
+
 // const and = (validatables) =>
 //     (value) =>
 //         whenDone(
@@ -121,6 +134,7 @@
 //             ),
 //             validatables.map(validatable => validatable(value))
 //         );
+
 // const or = (validatables) =>
 //     (value) =>
 //         whenDone(
@@ -138,6 +152,7 @@
 //             ),
 //             validatables.map(validatable => validatable(value))
 //         );
+
 // const shapeOf = (structure) => {
 //     const exec = shape(
 //         structure,
@@ -163,6 +178,7 @@
 //     exec[T_SHAPE] = true;
 //     return exec;
 // };
+
 // const arrayOf = (itemStructure) => {
 //     const validateMembers = array(
 //         itemStructure,
@@ -202,6 +218,7 @@
 //     };
 //     return validateMembers;
 // };
+
 // export {
 //     createAssertion,
 //     messages,
