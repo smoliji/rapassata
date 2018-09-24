@@ -20,7 +20,7 @@ export const object = <In extends { [key: string]: any }, Remap>(schema: ObjectS
                 (traverse, key) => (traverse as TraverseFunction<any>)((subject || {} as any)[key])
             )
         )
-            .then(iteratee) as any as PromiseLike<{ [key in keyof In]: Remap }>;
+            .then(iteratee) as any as PromiseLike<Remap>;
 
 
 

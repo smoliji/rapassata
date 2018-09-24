@@ -1,5 +1,5 @@
 
-import { validator, custom, shape } from './validator';
+import { validator, custom, shape, messages } from './validator';
 
 describe('ValidatorJS', () => {
     it('Uses validatorJS', () => {
@@ -80,16 +80,30 @@ describe('Required', () => {
     });
 });
 
-it('Cutom validator fn: T', () => {
-    const isX = (x: any) => (x === 'x');
-    expect.assertions(2);
-    return Promise.all([
-        expect(custom(isX)('a'))
-            .resolves.toHaveProperty('valid', false),
-        expect(custom(isX)('x'))
-            .resolves.toHaveProperty('valid', true),
-    ]);
+describe('Custom validator functions', () => {
+    it('Custom validator fn: T', () => {
+        const isX = (x: any) => (x === 'x');
+        expect.assertions(2);
+        return Promise.all([
+            expect(custom(isX)('a'))
+                .resolves.toHaveProperty('valid', false),
+            expect(custom(isX)('x'))
+                .resolves.toHaveProperty('valid', true),
+        ]);
+    });
+
+    it('Cutom validator fn: Promise<T>', () => {
+        const isX = (x: any) => Promise.resolve((x === 'x'));
+        expect.assertions(2);
+        return Promise.all([
+            expect(custom(isX)('a'))
+                .resolves.toHaveProperty('valid', false),
+            expect(custom(isX)('x'))
+                .resolves.toHaveProperty('valid', true),
+        ]);
+    });
 });
+
 
 it('Cutom message', () => {
     const isX = (x: any) => (x === 'x');
@@ -102,27 +116,18 @@ it('Cutom message', () => {
     ]);
 });
 
-it('Cutom validator fn: Promise<T>', () => {
-    const isX = (x: any) => Promise.resolve((x === 'x'));
-    expect.assertions(2);
-    return Promise.all([
-        expect(custom(isX)('a'))
-            .resolves.toHaveProperty('valid', false),
-        expect(custom(isX)('x'))
-            .resolves.toHaveProperty('valid', true),
-    ]);
-});
 
-describe.only('Shape', () => {
-    const isX = custom((x: any) => (x === 'x')).required();
+describe('Shape', () => {
+    const isX = custom((x: any) => (x === 'x'));
+
     [
         undefined,
         null,
     ]
         .forEach(tvalue => {
-            it(`\`${tvalue}\` -> no validations are applied`, () => {
+            it(`No validations are applied for \`${tvalue}\``, () => {
                 return expect(
-                        shape({ x: isX })(tvalue)
+                    shape({ x: isX })(tvalue)
                 ).resolves.toHaveProperty('valid', true);
             });
         });
@@ -134,9 +139,29 @@ describe.only('Shape', () => {
         )({ x: 'notx' });
         return Promise.all([
             expect(result).resolves.toHaveProperty('valid', false),
-            // TODO How to set the message?!
-            result.then(console.log)
-        ])
-    })
+            expect(result).resolves.toMatchObject({ message: { x: messages.invalid } }),
+        ]);
+    });
+    describe('Shape.required', () => {
+        it('(shady) Empty object passes, even if required prop exists', () => {
+            // TODO isX .isRequired. Empty object should not pass. Now it does :|
+            const result = shape(
+                {
+                    x: isX.required(),
+                }
+            )();
+            return expect(result).resolves.toHaveProperty('valid', true);
+        });
+        it('Required object sets `_error`', () => {
+            const result = shape(
+                {
+                    x: isX,
+                }
+            ).required()();
+            return Promise.all([
+                expect(result).resolves.toHaveProperty('valid', false),
+                expect(result).resolves.toMatchObject({ message: { _error: [messages.required] }}),
+            ]);
+        });
+    });
 });
-

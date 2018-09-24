@@ -5,7 +5,7 @@
   "main": "dist/validator.js",
   "scripts": {
     "test-lr": "nodemon --ignore dist -e ts --exec \"npm run test\"",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "author": "Jiri Smolik <smolikjirka@gmail.com>",
   "license": "MIT",
@@ -18,8 +18,8 @@
     "jest": "^23.5.0",
     "nodemon": "^1.17.3",
     "ts-jest": "^23.1.4",
-    "tsc-watch": "^1.0.21",
-    "typescript": "^2.8.3"
+    "tsc-watch": "^1.0.27",
+    "typescript": "^3.0.3"
   },
   "dependencies": {
     "bluebird": "^3.5.2",
