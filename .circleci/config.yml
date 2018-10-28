@@ -25,9 +25,9 @@ jobs:
 
   build:
     <<: *defaults
-    - attach_workspace:
-        at: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run: npm run build
       - persist_to_workspace:
           root: ~/repo
@@ -35,9 +35,9 @@ jobs:
 
   test:
     <<: *defaults
-    - attach_workspace:
-        at: ~/repo
     steps:
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: Run tests
           command: npm test -- --ci
