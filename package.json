@@ -24,8 +24,6 @@
   "dependencies": {
     "bluebird": "^3.5.2",
     "lodash": "^4.17.10",
-    "mongoose-validator": "^2.0.2",
-    "schematic-traverse": "1.0.1",
     "validator": "^10.7.1"
   }
 }

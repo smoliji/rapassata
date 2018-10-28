@@ -4,7 +4,7 @@ import { primitive, object, array } from './traverse';
 const wrap = (x: any) => `wrap(${x})`;
 const wrapObject = (x: object) => mapValues(x, wrap);
 
-describe.skip('Primitive', () => {
+describe('Primitive', () => {
     describe('Empty itr -> identity', () => {
         const traverse = primitive();
         it('undefined', () => {
@@ -40,7 +40,7 @@ describe.skip('Primitive', () => {
     });
 });
 
-describe.skip('Object', () => {
+describe('Object', () => {
     describe('All empty', () => {
         const traverse = object();
         [
@@ -75,7 +75,7 @@ describe.skip('Object', () => {
     });
 });
 
-describe.skip('Array', () => {
+describe('Array', () => {
     describe('All empty', () => {
         const traverse = array();
         [

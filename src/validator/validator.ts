@@ -1,5 +1,5 @@
 import * as Bluebird from 'bluebird';
-import { constant, defaults, flow, isNil, matches, values, pickBy, isEmpty, mapValues } from 'lodash';
+import { isEmpty, isNil, mapValues, matches, pickBy } from 'lodash';
 import * as validatorLib from 'validator';
 import * as traverse from '../traverse/traverse';
 
@@ -14,67 +14,16 @@ interface Assertion extends AssertionFunction {
 
 const defaultIsEmpty = isNil;
 
-interface AssertionDescriptor {
-    // The validation function itself. Always a function.
-    constraint: Constraint;
-    // The error message for the case of failure.
-    message: string;
-}
-
 export const messages = {
     invalid: 'Value is not valid',
     required: 'Value is required',
 }
-
-
-const getDefaultAssertionDescriptor = constant(
-    {
-        constraint: constant(Bluebird.resolve(true)),
-        message: messages.invalid,
-    } as AssertionDescriptor
-);
 
 interface AssertionResult {
     readonly message: ErrorMessage;
     readonly valid: boolean;
     readonly subject: any;
 }
-
-// class AssertionResult {
-//     public descriptor?: AssertionDescriptor;
-//     public subject?: any;
-//     constructor(
-//         public readonly valid: boolean,
-//         public readonly message?: any
-//     ) { }
-// }
-
-// class IntermediateAssertionResult {
-//     constructor(
-//         public readonly valid: boolean,
-//         public readonly result: any
-//     ) {}
-// }
-
-
-
-class Assertion {
-    // static withEmptyValidation = (descriptor: AssertionDescriptor) =>
-    //     (wrappedFn: AssertionFunction): AssertionFunction =>
-    //         (subject?: any) => {
-    //             if (!descriptor.isEmpty(subject)) {
-    //                 return wrappedFn(subject);
-    //             }
-    //             const result = new AssertionResult(!descriptor.required, descriptor.message);
-    //             result.descriptor = descriptor;
-    //             result.subject = subject;
-    //             return Bluebird.resolve(result);
-    //         }
-}
-
-// interface MessageEditableAssertion extends Assertion {
-//     message: (message: any) => Assertion;
-// }
 
 type MessageFunction<T> = (msg: any) => T;
 

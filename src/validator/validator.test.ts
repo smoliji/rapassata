@@ -147,8 +147,7 @@ describe('Shape', () => {
         ]);
     });
     describe('Shape.required', () => {
-        it('(shady) Empty object passes, even if required prop exists', () => {
-            // TODO isX .isRequired. Empty object should not pass. Now it does :|
+        it('Empty object passes, even if required prop exists', () => {
             const result = shape(
                 {
                     x: isX.required(),
@@ -172,9 +171,6 @@ describe('Shape', () => {
 
 describe('Array', () => {
     const isX = custom((x: any) => (x === 'x'));
-
-    // TODO: With required field
-    // TODO: Called with non-array
 
     it('Array of atoms', () => {
         const result = arrayOf(
@@ -223,6 +219,30 @@ describe('Array', () => {
                     [[messages.invalid], [messages.invalid]],
                     [[], [messages.invalid]],
                 ],
+            })
+        ]);
+    });
+
+    it('Array of non-array subject', () => {
+        const result = arrayOf(
+            isX
+        )(42);
+        return Promise.all([
+            expect(result).resolves.toMatchObject({
+                valid: true,
+                message: [],
+            })
+        ]);
+    });
+
+    it('Array with required member', () => {
+        const result = arrayOf(
+            isX.required()
+        )([]);
+        return Promise.all([
+            expect(result).resolves.toMatchObject({
+                valid: true,
+                message: [],
             })
         ]);
     });
