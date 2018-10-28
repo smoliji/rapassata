@@ -95,12 +95,27 @@ workflows:
       - build:
           requires:
             - checkout
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - test:
           requires:
             - checkout
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - coveralls:
           requires:
               - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - publish:
           requires:
             - build
