@@ -47,7 +47,9 @@ jobs:
           path: reports
       - persist_to_workspace:
           root: ~/repo
-          paths: reports
+          paths:
+            - reports
+            - coverage
   coveralls:
     <<: *defaults
     steps:

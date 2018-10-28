@@ -1,0 +1,120 @@
+<testsuites name="jest tests" tests="56" failures="0" time="1.561">
+  <testsuite name="ValidatorJS" errors="0" failures="0" skipped="0" timestamp="2018-10-28T17:00:22" time="0.655" tests="27">
+    <testcase classname="ValidatorJS Uses validatorJS" name="ValidatorJS Uses validatorJS" time="0.008">
+    </testcase>
+    <testcase classname="ValidatorJS Automatic coercion" name="ValidatorJS Automatic coercion" time="0.002">
+    </testcase>
+    <testcase classname="ValidatorJS Argument passing" name="ValidatorJS Argument passing" time="0">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; passes if `undefined`" name="Required Default behaviour: not required =&gt; passes if `undefined`" time="0.001">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; passes if `null`" name="Required Default behaviour: not required =&gt; passes if `null`" time="0">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; validator applies if ``" name="Required Default behaviour: not required =&gt; validator applies if ``" time="0">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; validator applies if `true`" name="Required Default behaviour: not required =&gt; validator applies if `true`" time="0.001">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; validator applies if `false`" name="Required Default behaviour: not required =&gt; validator applies if `false`" time="0">
+    </testcase>
+    <testcase classname="Required Default behaviour: not required =&gt; validator applies if `0`" name="Required Default behaviour: not required =&gt; validator applies if `0`" time="0">
+    </testcase>
+    <testcase classname="Required Custom empty function" name="Required Custom empty function" time="0.001">
+    </testcase>
+    <testcase classname="Required .required() -&gt; required" name="Required .required() -&gt; required" time="0">
+    </testcase>
+    <testcase classname="Required .required(true) -&gt; required" name="Required .required(true) -&gt; required" time="0.001">
+    </testcase>
+    <testcase classname="Required .required(false) -&gt; [default empty-pass behaviour]" name="Required .required(false) -&gt; [default empty-pass behaviour]" time="0">
+    </testcase>
+    <testcase classname="Custom validator functions Custom validator fn: T" name="Custom validator functions Custom validator fn: T" time="0.001">
+    </testcase>
+    <testcase classname="Custom validator functions Cutom validator fn: Promise&lt;T&gt;" name="Custom validator functions Cutom validator fn: Promise&lt;T&gt;" time="0.001">
+    </testcase>
+    <testcase classname="Custom validator functions Validator must be a fn" name="Custom validator functions Validator must be a fn" time="0">
+    </testcase>
+    <testcase classname=" Cutom message" name=" Cutom message" time="0.001">
+    </testcase>
+    <testcase classname="Shape No validations are applied for `undefined`" name="Shape No validations are applied for `undefined`" time="0">
+    </testcase>
+    <testcase classname="Shape No validations are applied for `null`" name="Shape No validations are applied for `null`" time="0.001">
+    </testcase>
+    <testcase classname="Shape Basic shape by description" name="Shape Basic shape by description" time="0.002">
+    </testcase>
+    <testcase classname="Shape Shape.required Empty object passes, even if required prop exists" name="Shape Shape.required Empty object passes, even if required prop exists" time="0.001">
+    </testcase>
+    <testcase classname="Shape Shape.required Required object sets `_error`" name="Shape Shape.required Required object sets `_error`" time="0">
+    </testcase>
+    <testcase classname="Array Array of atoms" name="Array Array of atoms" time="0.002">
+    </testcase>
+    <testcase classname="Array Array of shapes" name="Array Array of shapes" time="0">
+    </testcase>
+    <testcase classname="Array Array of arrays" name="Array Array of arrays" time="0.001">
+    </testcase>
+    <testcase classname="Array Array of non-array subject" name="Array Array of non-array subject" time="0">
+    </testcase>
+    <testcase classname="Array Array with required member" name="Array Array with required member" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2018-10-28T17:00:23" time="0.106" tests="1">
+    <testcase classname=" Readme" name=" Readme" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="Primitive" errors="0" failures="0" skipped="0" timestamp="2018-10-28T17:00:23" time="0.1" tests="28">
+    <testcase classname="Primitive Empty itr -&gt; identity undefined" name="Primitive Empty itr -&gt; identity undefined" time="0.002">
+    </testcase>
+    <testcase classname="Primitive Empty itr -&gt; identity number" name="Primitive Empty itr -&gt; identity number" time="0.001">
+    </testcase>
+    <testcase classname="Primitive Empty itr -&gt; identity plain object" name="Primitive Empty itr -&gt; identity plain object" time="0">
+    </testcase>
+    <testcase classname="Primitive Remap undefined" name="Primitive Remap undefined" time="0">
+    </testcase>
+    <testcase classname="Primitive Remap number" name="Primitive Remap number" time="0.001">
+    </testcase>
+    <testcase classname="Primitive Remap plain object" name="Primitive Remap plain object" time="0">
+    </testcase>
+    <testcase classname="Object All empty {} -&gt; {}" name="Object All empty {} -&gt; {}" time="0.001">
+    </testcase>
+    <testcase classname="Object All empty 1 -&gt; {}" name="Object All empty 1 -&gt; {}" time="0">
+    </testcase>
+    <testcase classname="Object All empty &quot;Asd&quot; -&gt; {}" name="Object All empty &quot;Asd&quot; -&gt; {}" time="0">
+    </testcase>
+    <testcase classname="Object All empty null -&gt; {}" name="Object All empty null -&gt; {}" time="0.001">
+    </testcase>
+    <testcase classname="Object All empty undefined -&gt; {}" name="Object All empty undefined -&gt; {}" time="0">
+    </testcase>
+    <testcase classname="Object Remap - follow ObjectSchema {} -&gt; { a: Remapped }" name="Object Remap - follow ObjectSchema {} -&gt; { a: Remapped }" time="0">
+    </testcase>
+    <testcase classname="Object Remap - follow ObjectSchema 1 -&gt; { a: Remapped }" name="Object Remap - follow ObjectSchema 1 -&gt; { a: Remapped }" time="0.001">
+    </testcase>
+    <testcase classname="Object Remap - follow ObjectSchema &quot;Asd&quot; -&gt; { a: Remapped }" name="Object Remap - follow ObjectSchema &quot;Asd&quot; -&gt; { a: Remapped }" time="0">
+    </testcase>
+    <testcase classname="Object Remap - follow ObjectSchema null -&gt; { a: Remapped }" name="Object Remap - follow ObjectSchema null -&gt; { a: Remapped }" time="0">
+    </testcase>
+    <testcase classname="Object Remap - follow ObjectSchema undefined -&gt; { a: Remapped }" name="Object Remap - follow ObjectSchema undefined -&gt; { a: Remapped }" time="0.001">
+    </testcase>
+    <testcase classname="Array All empty {} -&gt; []" name="Array All empty {} -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array All empty 1 -&gt; []" name="Array All empty 1 -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array All empty &quot;Asd&quot; -&gt; []" name="Array All empty &quot;Asd&quot; -&gt; []" time="0.001">
+    </testcase>
+    <testcase classname="Array All empty null -&gt; []" name="Array All empty null -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array All empty undefined -&gt; []" name="Array All empty undefined -&gt; []" time="0.001">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema {} -&gt; []" name="Array Remap - follow ItemSchema {} -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema 1 -&gt; []" name="Array Remap - follow ItemSchema 1 -&gt; []" time="0.001">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema &quot;Asd&quot; -&gt; []" name="Array Remap - follow ItemSchema &quot;Asd&quot; -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema null -&gt; []" name="Array Remap - follow ItemSchema null -&gt; []" time="0">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema undefined -&gt; []" name="Array Remap - follow ItemSchema undefined -&gt; []" time="0.001">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema [1] -&gt; Remap[]" name="Array Remap - follow ItemSchema [1] -&gt; Remap[]" time="0">
+    </testcase>
+    <testcase classname="Array Remap - follow ItemSchema [&quot;1&quot;,1,null] -&gt; Remap[]" name="Array Remap - follow ItemSchema [&quot;1&quot;,1,null] -&gt; Remap[]" time="0">
+    </testcase>
+  </testsuite>
+</testsuites>
