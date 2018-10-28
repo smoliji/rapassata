@@ -72,9 +72,26 @@ jobs:
 
 workflows:
   version: 2
+  build:
+    jobs:
+      - checkout
+      - build:
+          requires:
+            - checkout
+      - test:
+          requires:
+            - checkout
+      - coveralls:
+          requires:
+              - test
   release:
     jobs:
       - checkout
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - build:
           requires:
             - checkout
