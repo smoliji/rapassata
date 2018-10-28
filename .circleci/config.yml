@@ -20,7 +20,7 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
-  deploy:
+  publish:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -31,3 +31,20 @@ jobs:
       - run:
           name: Publish package
           command: npm publish
+
+workflows:
+  version: 2
+  release:
+    jobs:
+      - build
+        filters:  # required since `deploy` has tag filters AND requires `build`
+          tags:
+            only: /.*/
+      - publish:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
