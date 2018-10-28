@@ -2,6 +2,7 @@ module.exports = {
     "roots": [
       "<rootDir>/src"
     ],
+    "reporters": ["default", "jest-junit"],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
