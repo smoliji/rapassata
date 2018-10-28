@@ -48,7 +48,14 @@ jobs:
       - persist_to_workspace:
           root: ~/repo
           paths: reports
-
+  coveralls:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Submit coverage report to Coveralls.io
+          command: npm run test:coveralls
   publish:
     <<: *defaults
     steps:
@@ -72,6 +79,9 @@ workflows:
       - test:
           requires:
             - checkout
+      - coveralls:
+          requires:
+              - test
       - publish:
           requires:
             - build

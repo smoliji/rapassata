@@ -2,6 +2,8 @@
 
 Helps to validate anything against a created schema.
 
+[![CircleCI](https://circleci.com/gh/smoliji/rapassata/tree/master.svg?style=shield)](https://circleci.com/gh/smoliji/rapassata/tree/master)
+
 ```js
 import { shape, validator, type } from 'rapassata';
 

@@ -6,6 +6,7 @@
   "scripts": {
     "test-lr": "nodemon --ignore dist -e ts --exec \"npm run test\"",
     "test": "jest --coverage",
+    "test:coveralls": "cat ./coverage/lcov.info | coveralls",
     "build": "tsc"
   },
   "author": "Jiri Smolik <smolikjirka@gmail.com>",
@@ -16,6 +17,7 @@
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.9.4",
     "@types/validator": "^9.4.1",
+    "coveralls": "^3.0.2",
     "jest": "^23.5.0",
     "jest-junit": "^5.2.0",
     "nodemon": "^1.17.3",
