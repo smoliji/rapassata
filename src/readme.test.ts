@@ -16,7 +16,7 @@ it('Readme', () => {
         .then(result => {
             expect(JSON.stringify(result, null, 2)).toMatch(
 `{
-  "valid": true,
+  "valid": false,
   "message": {
     "email": [
       "Value is required"
