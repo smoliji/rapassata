@@ -42,12 +42,12 @@ jobs:
           name: Run tests
           command: npm test -- --ci
           environment:
-            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
+            JEST_JUNIT_OUTPUT: reports/jest/results.xml
       - store_test_results:
-          path: reports/junit
+          path: reports
       - persist_to_workspace:
           root: ~/repo
-          paths: .
+          paths: reports
 
   publish:
     <<: *defaults
