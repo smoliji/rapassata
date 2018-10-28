@@ -2,7 +2,7 @@
 
 Helps to validate anything against a created schema.
 
-[![CircleCI](https://circleci.com/gh/smoliji/rapassata/tree/master.svg?style=shield)](https://circleci.com/gh/smoliji/rapassata/tree/master)
+[![CircleCI](https://circleci.com/gh/smoliji/rapassata/tree/master.svg?style=shield)](https://circleci.com/gh/smoliji/rapassata/tree/master)[![Coverage Status](https://coveralls.io/repos/github/smoliji/rapassata/badge.svg?branch=master)](https://coveralls.io/github/smoliji/rapassata?branch=master)
 
 ```js
 import { shape, validator, type } from 'rapassata';
