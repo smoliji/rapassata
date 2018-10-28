@@ -3,9 +3,13 @@ import { arrayOf, validator, custom, shape, messages } from './validator';
 
 describe('ValidatorJS', () => {
     it('Uses validatorJS', () => {
-        expect.assertions(1);
-        return expect(validator('isEmail')('aaa'))
-            .resolves.toHaveProperty('valid', false);
+        expect.assertions(2);
+        const result = validator('isEmail')('aaa');
+        return Promise.all([
+            expect(result).resolves.toHaveProperty('valid', false),
+            expect(result).resolves.toHaveProperty('message', [messages.invalid]),
+        ])
+        
     });
     it('Automatic coercion', () => {
         // validator lib throws error on any input that is not a string

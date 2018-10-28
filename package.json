@@ -1,7 +1,7 @@
 {
-  "name": "schematic-validator",
+  "name": "rapassata",
   "version": "1.0.0",
-  "description": "",
+  "description": "Schematic object validation",
   "main": "dist/validator.js",
   "scripts": {
     "test-lr": "nodemon --ignore dist -e ts --exec \"npm run test\"",

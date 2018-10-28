@@ -52,7 +52,7 @@ const createMessageEditable = () => <T extends Assertion>(wrappedAssertion: T) =
 
 type RequiredFunction<T> = (isRequired?: boolean, isEmpty?: (subject?: any) => boolean) => T;
 
-const createRequireable = (requiredMessage: any = messages.required) => <T extends Assertion>(wrappedAssertion: T) => {
+const createRequireable = (requiredMessage: any = [messages.required]) => <T extends Assertion>(wrappedAssertion: T) => {
     let isRequired: boolean = false;
     let isEmpty: (...args: any[]) => boolean = defaultIsEmpty;
     const assertion: AssertionFunction = (subject?: any) => {
@@ -97,7 +97,7 @@ const createAssertion = (constraint: Constraint, message: any = messages.invalid
                 .then(valid => ({ valid, message: valid ? [] : [message], subject }));
         },
         {
-            msg: message,
+            msg: [message],
         }
     );
 };
@@ -169,3 +169,15 @@ export const arrayOf = (itemSchema: Assertion) => {
     );
     return assertion;
 };
+
+export const createTypeAssertion = (type: string) =>
+    (message?: ErrorMessage) =>
+        createRequireable()(createAssertion(x => {
+            return typeof x === type;
+        }, message)
+    )
+
+export const type = {
+    string: createTypeAssertion('string'),
+    number: createTypeAssertion('number'),
+}

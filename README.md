@@ -1,44 +1,44 @@
-# schematic-validator
+# rapassata
 
-> Validate an object against a given schema
+Helps to validate anything against a created schema.
 
 ```js
-const { shapeOf } = require('schematic-validator');
+import { shape, validator, type } from 'rapassata';
 
 // 1. Define a validation schema using helper functions
 //  and validators
-const validate = shapeOf(
+const validate = shape(
     {
-        email: and([isEmail, isRequired]),
-        address: shapeOf(
+        email: validator('isEmail').required(),
+        address: shape(
             {
-                street: isString,
-                postalCode: isNumber,
+                street: type.string(),
+                postalCode: type.number(),
             }
-        )
+        ).required(),
     }
 );
 
-validate({});
-
+// 2. Validate input data
+validate({ address: { postalCode: '301' } })
+// 3. Retreive the Promised result
+    .then(result =>
 // {
-//   "result": false,
+//   "valid": false,
 //   "message": {
 //     "email": [
-//       "Is not an email"
+//       "Value is required"
 //     ],
 //     "address": {
-//       "street": [
-//         "Is not a string"
-//       ],
 //       "postalCode": [
-//         "Is not a number"
+//         "Value is not valid"
 //       ]
+//     }
+//   },
+//   "subject": {
+//     "address": {
+//       "postalCode": "301"
 //     }
 //   }
 // }
 ```
-
-## API
-
-###
