@@ -65,26 +65,11 @@ workflows:
   version: 2
   release:
     jobs:
-      - checkout:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
+      - checkout
       - build:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
           requires:
             - checkout
       - test:
-          filters:
-              tags:
-                only: /^v.*/
-              branches:
-                ignore: /.*/
           requires:
             - checkout
       - publish:
