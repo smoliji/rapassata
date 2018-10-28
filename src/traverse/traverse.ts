@@ -29,4 +29,4 @@ export const array = <In extends Array<any>, Remap>(itemSchema: TraverseFunction
         Bluebird.all(
             isArray(subject) ? subject.map(itemSchema) : []
         )
-            .then(iteratee) as any as PromiseLike<Remap[]>;
+            .then(iteratee) as any as PromiseLike<Remap>;

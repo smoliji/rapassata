@@ -1,5 +1,5 @@
 
-import { validator, custom, shape, messages } from './validator';
+import { arrayOf, validator, custom, shape, messages } from './validator';
 
 describe('ValidatorJS', () => {
     it('Uses validatorJS', () => {
@@ -139,7 +139,7 @@ describe('Shape', () => {
         )({ x: 'notx' });
         return Promise.all([
             expect(result).resolves.toHaveProperty('valid', false),
-            expect(result).resolves.toMatchObject({ message: { x: messages.invalid } }),
+            expect(result).resolves.toMatchObject({ message: { x: [messages.invalid] } }),
         ]);
     });
     describe('Shape.required', () => {
@@ -163,5 +163,63 @@ describe('Shape', () => {
                 expect(result).resolves.toMatchObject({ message: { _error: [messages.required] }}),
             ]);
         });
+    });
+});
+
+describe('Array', () => {
+    const isX = custom((x: any) => (x === 'x'));
+
+    // TODO: With required field
+    // TODO: Called with non-array
+
+    it('Array of atoms', () => {
+        const result = arrayOf(
+            isX
+        )(['notx', 'x', 'notx']);
+        return Promise.all([
+            expect(result).resolves.toMatchObject({
+                valid: false,
+                message: [ [messages.invalid], [], [messages.invalid] ],
+            })
+        ]);
+    });
+    it('Array of shapes', () => {
+        const result = arrayOf(
+            shape(
+                {
+                    x: isX
+                }
+            )
+        )([{ x: 'notx' }, { x: 'x' }, { x: 'notx' }]);
+        return Promise.all([
+            expect(result).resolves.toMatchObject({
+                valid: false,
+                message: [ { x: [messages.invalid] }, {}, { x: [messages.invalid] } ],
+            })
+        ]);
+    });
+
+    it('Array of arrays', () => {
+        const result = arrayOf(
+            arrayOf(
+                isX
+            )
+        )([
+            ['notx', 'x'],
+            ['x', 'x'],
+            ['notx', 'notx'],
+            ['x', 'notx']
+        ]);
+        return Promise.all([
+            expect(result).resolves.toMatchObject({
+                valid: false,
+                message: [
+                    [[messages.invalid], []],
+                    [],
+                    [[messages.invalid], [messages.invalid]],
+                    [[], [messages.invalid]],
+                ],
+            })
+        ]);
     });
 });

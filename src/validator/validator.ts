@@ -140,6 +140,14 @@ const createRequireable = (requiredMessage: any = messages.required) => <T exten
     ) as T & { required: RequiredFunction<T> };
 };
 
+const withType = (type: Symbol) => (x?: any) => {
+    return Object.assign(x, { type });
+};
+
+const isType = (type: Symbol) => (x?: any) => {
+    return x && x.type === type;
+};
+
 const createAssertion = (constraint: Constraint, message: any = messages.invalid): Assertion => {
     if (typeof constraint !== 'function') {
         throw new TypeError('Constraint must be a Function');
@@ -168,6 +176,7 @@ export const custom = (constraint: Constraint, message?: any) => {
     return createRequireable()(createMessageEditable()(createAssertion(constraint, message)));
 };
 
+const SHAPE_SYMBOL = Symbol('shape');
 
 export const shape = (schema: { [key: string]: Assertion }) => {
     const assertion: Assertion = (subject?: any) => {
@@ -180,11 +189,49 @@ export const shape = (schema: { [key: string]: Assertion }) => {
                 );
                 return {
                     valid: isEmpty(invalidProps),
-                    message: mapValues(invalidProps, (value: AssertionResult) => value.message),
+                    message: mapValues(invalidProps, (value: AssertionResult) => [value.message]),
                     subject,
                 };
             }
         )(subject);
     };
-    return createRequireable({ _error: [messages.required] })(assertion);
+    return createRequireable({ _error: [messages.required] })(withType(SHAPE_SYMBOL)(assertion));
+};
+
+const ARRAY_SYMBOL = Symbol('array');
+
+export const arrayOf = (itemSchema: Assertion & { type?: Symbol }) => {
+    const assertion: Assertion = (subject?: any) => {
+        return traverse.array(
+            itemSchema,
+            (items: AssertionResult[]) => {
+                // [{}] array of objects 
+                // vs [[]] array of atoms
+                // ..arrays of array of :thinking_face:
+                return {
+                    valid: !items.find(matches({ valid: false })),
+                    message: items.map(item => {
+                        if (item.valid) {
+                            switch (itemSchema.type) {
+                                case SHAPE_SYMBOL:
+                                    return {};
+                                case ARRAY_SYMBOL:
+                                default:
+                                    return [];
+                            }
+                        }
+                        switch (itemSchema.type) {
+                            case SHAPE_SYMBOL:
+                            case ARRAY_SYMBOL:
+                                return item.message;
+                            default:
+                                return [item.message];
+                        }
+                    }),
+                    subject,
+                };
+            }
+        )(subject);
+    };
+    return withType(ARRAY_SYMBOL)(assertion);
 };
