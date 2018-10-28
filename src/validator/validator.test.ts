@@ -102,6 +102,10 @@ describe('Custom validator functions', () => {
                 .resolves.toHaveProperty('valid', true),
         ]);
     });
+    it('Validator must be a fn', () => {
+        // @ts-ignore
+        expect(() => custom('foo')).toThrowError('Constraint must be a Function');
+    })
 });
 
 
@@ -112,7 +116,7 @@ it('Cutom message', () => {
     const result = custom(isX).message(message)('a');
     return Promise.all([
         expect(result).resolves.toHaveProperty('valid', false),
-        expect(result).resolves.toHaveProperty('message', message),
+        expect(result).resolves.toHaveProperty('message', [message]),
     ]);
 });
 

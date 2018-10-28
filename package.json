@@ -5,7 +5,7 @@
   "main": "dist/validator.js",
   "scripts": {
     "test-lr": "nodemon --ignore dist -e ts --exec \"npm run test\"",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "Jiri Smolik <smolikjirka@gmail.com>",
   "license": "MIT",
