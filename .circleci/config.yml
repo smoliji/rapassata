@@ -86,7 +86,7 @@ workflows:
               - test
   release:
     jobs:
-      - checkout
+      - checkout:
           filters:
             tags:
               only: /^v.*/
