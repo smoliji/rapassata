@@ -37,9 +37,9 @@ workflows:
   release:
     jobs:
       - build
-        filters:  # required since `deploy` has tag filters AND requires `build`
-          tags:
-            only: /.*/
+          filters:  # required since `deploy` has tag filters AND requires `build`
+            tags:
+              only: /.*/
       - publish:
           requires:
             - build
