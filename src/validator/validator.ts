@@ -180,4 +180,27 @@ export const createTypeAssertion = (type: string) =>
 export const type = {
     string: createTypeAssertion('string'),
     number: createTypeAssertion('number'),
+    boolean: createTypeAssertion('boolean'),
+}
+
+export const and = (...assertions: Assertion[]) => {
+    const assertion: Assertion = Object.assign(
+        async(subject?: any) => {
+            for (const item of assertions) {
+                const result = await item(subject);
+                if (!result.valid) {
+                    return result;
+                }
+            }
+            return {
+                valid: true,
+                message: [],
+                subject,
+            };
+        },
+        {
+            msg: assertions.map(x => x.msg),
+        }
+    );
+    return assertion;
 }

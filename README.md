@@ -44,3 +44,19 @@ validate({ address: { postalCode: '301' } })
 //   }
 // }
 ```
+
+## Assertion creators
+
+Assertion is a function, accepting any subject item and decides whether the passsed value is valid and the message that should be passed along if its not. 
+
+- `array(itemAssertion: Assertion): Assertion`. Creates an assertion, where each item of the collection is matched against the `itemAssertion` definition.
+- `shape(shapeSchema): Assertion`. Creates an assertion for a generic object. Schema should be defined as { [key: string]: Assertion }.
+- `type.string(): Assertion`, `type.boolean()`, `type.number()` create an assertion that matches the subject with `typeof` operator.
+- `validator(name, args): Assertion`. Creates an assertion based on [validator](https://npmjs.com/package/validator) package. Subject is automatically cast to string, as validator package does throw an error otherwise.
+- `custom(fn, msg): Assertion` can be used to create an assertion from a custom function, that accepts the subject and responds/resolves with true/false.
+- `and(...assertions): Assertion`. Composes an assertion of many assertions. Each assertion is called sequentially, first to fail fails the composed assertion. Does not work with shape an array assertions.
+### Required
+
+Most assertions have a `.required()` method to make the value required.
+
+By default, `null` and `undefined` are considered empty for required fields.

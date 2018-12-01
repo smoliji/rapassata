@@ -1,5 +1,5 @@
 
-import { arrayOf, validator, custom, shape, messages } from './validator';
+import { arrayOf, validator, custom, shape, messages, type, and } from './validator';
 
 describe('ValidatorJS', () => {
     it('Uses validatorJS', () => {
@@ -26,6 +26,14 @@ describe('ValidatorJS', () => {
             expect(validator('isLength', [{ min: 2 }])('..'))
                 .resolves.toHaveProperty('valid', true),
         ]);
+    });
+});
+
+describe('Types', () => {
+    it('boolean', async() => {
+        // @ts-ignore
+        const result = await type.string()(1);
+        expect(result).toMatchObject({ valid: false, message: [messages.invalid] });
     });
 });
 
@@ -249,5 +257,29 @@ describe('Array', () => {
                 message: [],
             })
         ]);
+    });
+});
+
+
+describe('and', () => {
+    const isX = custom((x: any) => (x === 'x'));
+    const isY = custom((x: any) => (x === 'y'));
+    it('primitives', async() => {
+        const result = await and()('b');
+        expect(result).toMatchObject(
+            {
+                valid: true,
+                message: []
+            }
+        );
+    })
+    it('primitives', async() => {
+        const result = await and(isX, isY)('b');
+        expect(result).toMatchObject(
+            {
+                valid: false,
+                message: [messages.invalid],
+            }
+        );
     });
 });
